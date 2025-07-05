@@ -4,28 +4,6 @@ A full-stack machine learning web application to predict real estate sale prices
 
 ---
 
-## 📁 Project Structure
-
-real-estate-predictor/
-├── backend/
-
-│ ├── main.py # FastAPI app
-│ ├── train_model.py # Script to train LightGBM model
-│ ├── SALESPRICE_model.pkl # Trained model
-│ ├── label_encoder.pkl # Encoded PROPERTYTYPE
-│ └── requirements.txt # Backend dependencies
-
-├── frontend/ # Angular frontend
-
-│ ├── src/
-│ ├── angular.json
-│ └── ...
-├── AI Hakathon.csv # Raw dataset used for training
-├── README.md
-└── .gitignore
-
----
-
 ## 🚀 Getting Started
 
 ### ⚙️ Prerequisites
