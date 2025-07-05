@@ -1,0 +1,80 @@
+<div class="d-flex flex-column min-vh-100">
+
+  <app-header></app-header>
+
+  <main class="container flex-grow-1">
+    <div class="container my-5">
+      <h3 class="mb-4 text-primary"> <i class="bi bi-house-door-fill me-2"></i> Real Estate Price Predictor</h3>
+    
+      <form (submit)="$event.preventDefault(); predict()">
+        <div class="row g-3 mb-3">
+          <div class="col-md-12">
+            <label class="form-label">Lot Size (Acres)</label>
+            <input type="number" class="form-control" [(ngModel)]="form.lot_size" name="lot_size" required>
+          </div>
+    
+          <div class="col-md-12">
+            <label class="form-label">Year Built</label>
+            <input type="number" class="form-control" [(ngModel)]="form.year_built" name="year_built" required>
+          </div>
+    
+          <div class="col-md-12">
+            <label class="form-label">Beds</label>
+            <input type="number" class="form-control" [(ngModel)]="form.beds" name="beds" required>
+          </div>
+    
+          <div class="col-md-12">
+            <label class="form-label">Baths</label>
+            <input type="number" class="form-control" [(ngModel)]="form.baths" name="baths" step="0.5" required>
+          </div>
+    
+          <div class="col-md-12">
+            <label class="form-label">Property Type</label>
+            <select class="form-select" [(ngModel)]="form.property_type" name="property_type">
+              <option *ngFor="let type of propertyTypes" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+        </div>
+    
+        <button type="submit" style="right: 0;" class="btn btn-primary">Predict</button>
+      </form>
+    
+      <div *ngIf="loading" class="mt-3 alert alert-info">
+        ⏳ Predicting...
+      </div>
+    
+      <div *ngIf="error" class="mt-3 alert alert-danger">
+        <i class="bi bi-ban text-warning"></i> {{ error }}
+      </div>
+    
+      <div *ngIf="result" class="mt-4 card shadow-sm border-primary">
+        <div class="card-body">
+          <h5 class="card-title text-success"><i class="bi bi-bar-chart-fill me-2"></i> Prediction Results:</h5>
+    
+          <p><strong><i class="bi bi-currency-dollar text-success"></i> Predicted Price:</strong> ${{ result.predicted_sale_price | number:'1.0-0' }}
+            <span class="text-muted">(Confidence: {{ result.confidence_value | number:'1.0-0' }}%)</span>
+          </p>
+
+          <ng-container *ngIf="result.actual_sale_price !== null; else noData">
+            <p><strong><i class="bi bi-graph-down-arrow text-danger"></i> Actual Avg Sale Price:</strong> ${{ result.actual_sale_price | number:'1.0-0' }}</p>
+            <p><strong><i class="bi bi-currency-exchange text-warning"></i> Actual Avg AVM:</strong> ${{ result.actual_estimated_value | number:'1.0-0' }}
+              (Confidence: {{ result.actual_confidence_value | number:'1.0-0' }}%)
+            </p>
+    
+            <p><strong><i class="bi bi-sliders2 text-warning"></i> Error vs Actual Sale Price:</strong> {{ result.error_vs_sale | number:'1.2-2' }}%</p>
+            <p><strong><i class="bi bi-sliders2 text-warning"></i> Error vs Estimated Value:</strong> {{ result.error_vs_estimate | number:'1.2-2' }}%</p>
+          </ng-container>
+    
+          <ng-template #noData>
+            <p class="text-danger"> <i class="bi bi-ban text-warning"></i> No exact matching property found in dataset.</p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    
+  </main>
+
+  <app-footer></app-footer>
+
+</div>
+
